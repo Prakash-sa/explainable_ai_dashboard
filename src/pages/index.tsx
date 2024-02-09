@@ -25,7 +25,6 @@ const StyleSelectPage = () => {
 
   return (
     <>
-      <DashboardPage/>
     </>
   )
 }
