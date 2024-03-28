@@ -13,8 +13,7 @@ import LayoutAuthenticated from '../layouts/Authenticated'
 import SectionMain from '../components/Section/Main'
 import SectionTitleLineWithButton from '../components/Section/TitleLineWithButton'
 import CardBoxWidget from '../components/CardBox/Widget'
-import { useSampleClients, useSampleTransactions } from '../hooks/sampleData'
-import CardBoxTransaction from '../components/CardBox/Transaction'
+import { useSampleClients } from '../hooks/sampleData'
 import { Client, Transaction } from '../interfaces'
 import CardBoxClient from '../components/CardBox/Client'
 import CardBox from '../components/CardBox'
@@ -25,6 +24,7 @@ import TableSampleClients from '../components/Table/SampleClients'
 import { getPageTitle } from '../config'
 import axios from 'axios'
 import SimpleCardBox from '../components/SimpleCardBox'
+import { BaseURL } from '../constant'
 
 // import { ForceGraph2D } from 'react-force-graph';
 import dynamic from 'next/dynamic';
@@ -33,22 +33,19 @@ const ForceGraph2D = dynamic(() => import('react-force-graph-2d'), {
   ssr: false // Disable server-side rendering
 });
 
-
-const baseURL='https://1d97-34-168-170-149.ngrok-free.app/'
-const perturbURL=baseURL+"no_perturb/"
-const patientURL=baseURL+"los/"
-const injuryURL=baseURL+"injury_diagnosis/"
-const respiURL=baseURL+"respiratory_diagnosis/"
+const perturbURL=BaseURL+"no_perturb/"
+const losURL=BaseURL+"los/"
+const patientinfoURL=BaseURL+"patientinfo/"
 
 const DashboardPage = () => {
   const { clients } = useSampleClients()
-  const { transactions } = useSampleTransactions()
 
   const clientsListed = clients.slice(0, 4)
 
   const [chartData, setChartData] = useState(sampleChartData())
   const [data, setData] = useState(null);
   const [patientData, setPatientData] = useState<any>(null);
+  const [patientInfoData, setPatientInfoData] = useState<any>(null);
 
     useEffect(() => {
         async function fetchGraphData() {
@@ -72,6 +69,29 @@ const DashboardPage = () => {
                 setData(error)
             }
         }
+
+        async function fetchLOSData() {
+          try {
+              const config={
+                headers:{
+                  'content-type':'application/json',
+                  "Access-Control-Allow-Origin":"*",
+                  "Access-Control-Allow-Headers":"X-Requested-With",
+                  "Content-Security-Policy": "upgrade-insecure-requests",
+                  "mode": "cors",
+                  "ngrok-skip-browser-warning": "69420",
+                }
+              };
+
+              const response = await axios.get(losURL,config);
+              console.log(response.data)
+              setPatientData(response.data);
+          } catch (error) {
+              console.error('Error fetching data:', error);
+              setPatientData(error)
+          }
+      }
+
         async function fetchPatientData() {
           try {
               const config={
@@ -85,16 +105,17 @@ const DashboardPage = () => {
                 }
               };
 
-              const response = await axios.get(patientURL,config);
+              const response = await axios.get(patientinfoURL,config);
               console.log(response.data)
-              setPatientData(response.data);
+              setPatientInfoData(response.data);
           } catch (error) {
               console.error('Error fetching data:', error);
-              setPatientData(error)
+              setPatientInfoData(error)
           }
       }
         fetchGraphData();
         fetchPatientData();
+        fetchLOSData();
     }, []);
 
   const fillChartData = (e: React.MouseEvent) => {
@@ -117,60 +138,34 @@ const DashboardPage = () => {
           <div className='grid grid-cols-1 gap-6 lg:grid-cols-3 mb-6'>
             <SimpleCardBox title='Total Patient' value={patientData.los_length}          
             />
-            <SimpleCardBox title='Mean LOS' value={patientData.mean} suffix='days'          
+            <SimpleCardBox title='Mean of Length of stay' value={patientData.mean} suffix='days'          
             />
-            <SimpleCardBox title='Max LOS' value={patientData.max} suffix='days'          
+            <SimpleCardBox title='Maximum LOS' value={patientData.max} suffix='days'          
             />
-            <SimpleCardBox title='Min LOS' value={patientData.min} suffix='days'          
+            <SimpleCardBox title='Minimum LOS' value={patientData.min} suffix='days'          
             />
           </div>
           )}
         
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          <div className="flex flex-col justify-between">
-            {transactions.map((transaction: Transaction) => (
-              <CardBoxTransaction key={transaction.id} transaction={transaction} />
-            ))}
-          </div>
+        {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <div className="flex flex-col justify-between">
             {clientsListed.map((client: Client) => (
               <CardBoxClient key={client.id} client={client} />
             ))}
           </div>
-        </div>
-
-        <SectionTitleLineWithButton icon={mdiChartPie} title="Impact of Disease on LoS">
-        
-          <Button icon={mdiReload} color="whiteDark" onClick={fillChartData} />
-        
-        </SectionTitleLineWithButton>
-        <div className='flex justify-center items-center'>
-            {data && (
-              <div >
-
-                  <ForceGraph2D
-                  graphData={data}
-                  nodeLabel={node => `${node.id}: ${node.name} (${node.val})`}
-                  linkAutoColorBy='white'
-                  nodeAutoColorBy="id"
-                  backgroundColor='black'
-                  width={500}
-                  height={400}
-                />
-
-               </div>
-            )}
-        </div>
+        </div> */}
 
 
-        {/* <CardBox className="mb-6">{chartData && <ChartLineSample data={chartData} />}</CardBox> */}
 
         <SectionTitleLineWithButton icon={mdiAccountMultiple} title="Patient Information" />
 
-        <CardBox hasTable>
-          <TableSampleClients />
-        </CardBox>
+        {patientInfoData && (
+              <CardBox hasTable>
+              <TableSampleClients patients={patientInfoData} />
+            </CardBox>
+            )}
+        
       </SectionMain>
     </>
   )

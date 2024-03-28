@@ -1,115 +1,78 @@
-import { mdiEye, mdiTrashCan } from '@mdi/js'
-import React, { useState } from 'react'
-import { useSampleClients } from '../../hooks/sampleData'
-import { Client } from '../../interfaces'
-import Button from '../Button'
-import Buttons from '../Buttons'
-import CardBoxModal from '../CardBox/Modal'
-import UserAvatar from '../UserAvatar'
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import Button from '../Button';
+import Buttons from '../Buttons';
+import CardBoxModal from '../CardBox/Modal';
+import UserAvatar from '../UserAvatar';
+import { mdiEye, mdiTrashCan } from '@mdi/js';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
-const TableSampleClients = () => {
-  const { clients } = useSampleClients()
+const TableSampleClients = ({ patients }) => {
+  const perPage = 5;
+  const [currentPage, setCurrentPage] = useState(0);
+  const clientsPaginated = patients.slice(perPage * currentPage, perPage * (currentPage + 1));
+  const numPages = Math.ceil(patients.length / perPage);
+  const pagesList = Array.from({ length: numPages }, (_, i) => i);
 
-  const perPage = 5
+  const router = useRouter(); // Initialize the useRouter hook
 
-  const [currentPage, setCurrentPage] = useState(0)
-
-  const clientsPaginated = clients.slice(perPage * currentPage, perPage * (currentPage + 1))
-
-  const numPages = clients.length / perPage
-
-  const pagesList = []
-
-  for (let i = 0; i < numPages; i++) {
-    pagesList.push(i)
-  }
-
-  const [isModalInfoActive, setIsModalInfoActive] = useState(false)
-  const [isModalTrashActive, setIsModalTrashActive] = useState(false)
+  const [isModalInfoActive, setIsModalInfoActive] = useState(false);
+  const [isModalTrashActive, setIsModalTrashActive] = useState(false);
 
   const handleModalAction = () => {
-    setIsModalInfoActive(false)
-    setIsModalTrashActive(false)
+    setIsModalInfoActive(false);
+    setIsModalTrashActive(false);
+  };
+
+  const clickPatient=(e)=>{
+    console.log(e)
   }
+
+  const handleViewDetails = (patient) => {
+
+
+    // Store patient data in localStorage
+    localStorage.setItem('selectedPatient', JSON.stringify(patient));
+    // Navigate to another page with patient data as props
+    router.push({
+      pathname: '/patients', // Replace with your actual page pathname
+      // query: { patientId: patient.id, ...patient }, // Pass patient data as query params
+    });
+  };
+
+
 
   return (
     <>
-      <CardBoxModal
-        title="Sample modal"
-        buttonColor="info"
-        buttonLabel="Done"
-        isActive={isModalInfoActive}
-        onConfirm={handleModalAction}
-        onCancel={handleModalAction}
-      >
-        <p>
-          Lorem ipsum dolor sit amet <b>adipiscing elit</b>
-        </p>
-        <p>This is sample modal</p>
-      </CardBoxModal>
-
-      <CardBoxModal
-        title="Please confirm"
-        buttonColor="danger"
-        buttonLabel="Confirm"
-        isActive={isModalTrashActive}
-        onConfirm={handleModalAction}
-        onCancel={handleModalAction}
-      >
-        <p>
-          Lorem ipsum dolor sit amet <b>adipiscing elit</b>
-        </p>
-        <p>This is sample modal</p>
-      </CardBoxModal>
-
       <table>
         <thead>
           <tr>
             <th />
-            <th>Name</th>
-            <th>Company</th>
-            <th>City</th>
-            <th>Progress</th>
-            <th>Created</th>
+            <th>ID</th>
+            <th>Admission</th>
+            <th>Age</th>
+            <th>Ethnicity</th>
+            <th>Gender</th>
             <th />
           </tr>
         </thead>
         <tbody>
-          {clientsPaginated.map((client: Client) => (
-            <tr key={client.id}>
+          {clientsPaginated.map((patient) => (
+            <tr key={patient.id}>
               <td className="border-b-0 lg:w-6 before:hidden">
-                <UserAvatar username={client.name} className="w-24 h-24 mx-auto lg:w-6 lg:h-6" />
+                <UserAvatar username={patient.gender} className="w-24 h-24 mx-auto lg:w-6 lg:h-6" />
               </td>
-              <td data-label="Name">{client.name}</td>
-              <td data-label="Company">{client.company}</td>
-              <td data-label="City">{client.city}</td>
-              <td data-label="Progress" className="lg:w-32">
-                <progress
-                  className="flex w-2/5 self-center lg:w-full"
-                  max="100"
-                  value={client.progress}
-                >
-                  {client.progress}
-                </progress>
-              </td>
-              <td data-label="Created" className="lg:w-1 whitespace-nowrap">
-                <small className="text-gray-500 dark:text-slate-400">{client.created}</small>
-              </td>
-              <td className="before:hidden lg:w-1 whitespace-nowrap">
-                <Buttons type="justify-start lg:justify-end" noWrap>
-                  <Button
-                    color="info"
-                    icon={mdiEye}
-                    onClick={() => setIsModalInfoActive(true)}
-                    small
-                  />
-                  <Button
-                    color="danger"
-                    icon={mdiTrashCan}
-                    onClick={() => setIsModalTrashActive(true)}
-                    small
-                  />
-                </Buttons>
+              <td data-label="ID">{patient.id}</td>
+              <td data-label="Admission">{patient.admission}</td>
+              <td data-label="Age">{patient.age}</td>
+              <td data-label="Ethnicity">{patient.ethnicity}</td>
+              <td data-label="Gender">{patient.gender}</td>
+              <td>
+                <Button
+                  icon={mdiEye}
+                  onClick={() => handleViewDetails(patient)} // Call handleViewDetails function
+                />
               </td>
             </tr>
           ))}
@@ -135,7 +98,19 @@ const TableSampleClients = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default TableSampleClients
+TableSampleClients.propTypes = {
+  patients: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      admission: PropTypes.string.isRequired,
+      age: PropTypes.number.isRequired,
+      ethnicity: PropTypes.string.isRequired,
+      gender: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
+
+export default TableSampleClients;

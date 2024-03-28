@@ -14,7 +14,7 @@ function SimpleCardBox({ title = '', value, suffix='' }: Props) {
         <div className="font-bold text-xl mb-2">
             {title}
         </div>
-        <p className="text-gray-700 text-base">
+        <p className="text-blue-600 text-base font-semibold">
           {value} {suffix}
         </p>
       </div>

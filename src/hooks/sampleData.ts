@@ -1,22 +1,36 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import useSWR from 'swr'
-const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 export const useSampleClients = () => {
-  const { data, error } = useSWR('/admin-one-react-tailwind/data-sources/clients.json', fetcher)
+  
+  const [data, setPatientInfoData] = useState<any>(null);
+
+  // async function fetchPatientData() {
+  //     try {
+  //         const config={
+  //           headers:{
+  //             'content-type':'application/json',
+  //             "Access-Control-Allow-Origin":"*",
+  //             "Access-Control-Allow-Headers":"X-Requested-With",
+  //             "Content-Security-Policy": "upgrade-insecure-requests",
+  //             "mode": "cors",
+  //             "ngrok-skip-browser-warning": "69420",
+  //           }
+  //         };
+
+  //         const response = await axios.get(patientinfoURL,config);
+  //         console.log(response.data)
+  //         setPatientInfoData(response.data);
+  //     } catch (error) {
+  //         console.error('Error fetching data:', error);
+  //         setPatientInfoData(error)
+  //     }
+  // }
+  // if(data==null)
+  // fetchPatientData();
 
   return {
-    clients: data?.data ?? [],
-    isLoading: !error && !data,
-    isError: error,
-  }
-}
-
-export const useSampleTransactions = () => {
-  const { data, error } = useSWR('/admin-one-react-tailwind/data-sources/history.json', fetcher)
-
-  return {
-    transactions: data?.data ?? [],
-    isLoading: !error && !data,
-    isError: error,
+    clients: data?.data ?? []
   }
 }
