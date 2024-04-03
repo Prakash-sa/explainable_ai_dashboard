@@ -43,7 +43,7 @@ const ProfilePage = () => {
         <SectionTitleLineWithButton icon={mdiAccount} title="Profile" main>
         </SectionTitleLineWithButton>
 
-        <CardBoxUser className="mb-6" />
+        {/* <CardBoxUser className="mb-6" /> */}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="flex flex-col">

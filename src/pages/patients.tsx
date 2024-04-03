@@ -1,4 +1,5 @@
 import {
+  mdiAccount,
     mdiAccountMultiple,
     mdiCartOutline,
     mdiChartPie,
@@ -28,6 +29,7 @@ import {
   
   // import { ForceGraph2D } from 'react-force-graph';
   import dynamic from 'next/dynamic';
+import CardBoxUser from '../components/CardBox/User'
   
   const ForceGraph2D = dynamic(() => import('react-force-graph-2d'), {
     ssr: false // Disable server-side rendering
@@ -80,9 +82,16 @@ const [patientData,setPatientData]=useState(null);
         <title>{getPageTitle('Patients')}</title>
       </Head>
       <SectionMain>
-        <SectionTitleLineWithButton icon={mdiChartTimelineVariant} title="Overview" main>
-
+        <SectionTitleLineWithButton icon={mdiAccount} title="Profile" main>
         </SectionTitleLineWithButton>
+        {
+          patientData &&
+          (
+
+            <CardBoxUser data={patientData}/>
+          )
+        }
+
 
 
       <SectionTitleLineWithButton icon={mdiChartPie} title="Impact of Disease on LoS">
@@ -100,8 +109,9 @@ const [patientData,setPatientData]=useState(null);
               linkAutoColorBy='white'
               nodeAutoColorBy="id"
               backgroundColor='black'
-              width={500}
-              height={400}
+              width={800}
+              height={600}
+              linkWidth={(link) => Math.sqrt(link.weight)} // Adjust link width based on weight
             />
 
             </div>
