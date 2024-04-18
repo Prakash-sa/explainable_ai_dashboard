@@ -101,9 +101,10 @@ const [patientData,setPatientData]=useState(null);
     </SectionTitleLineWithButton>
     <div className='flex justify-center items-center'>
         {data && (
-          <div >
 
-              <ForceGraph2D
+<div style={{ display: 'flex' }}>
+<div style={{ width: '800px', height: '600px', overflow: 'hidden' }}>
+<ForceGraph2D
               graphData={data}
               nodeLabel={node => `${node.id}: ${node.name} (${node.val})`}
               linkAutoColorBy='white'
@@ -111,10 +112,21 @@ const [patientData,setPatientData]=useState(null);
               backgroundColor='black'
               width={800}
               height={600}
+              showNavInfo={true}
               linkWidth={(link) => Math.sqrt(link.weight)} // Adjust link width based on weight
             />
+</div>
+<div style={{ marginLeft: '20px' }}>
+  <h2>Node Values</h2>
+  {data.nodes.map((node) => (
+    <div key={node.id}>
+      <strong>{node.name}</strong>: {node.val}
+    </div>
+  ))}
+</div>
+</div>
 
-            </div>
+            
         )}
     </div>
 
