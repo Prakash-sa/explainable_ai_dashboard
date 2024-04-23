@@ -102,28 +102,32 @@ const [patientData,setPatientData]=useState(null);
     <div className='flex justify-center items-center'>
         {data && (
 
-<div style={{ display: 'flex' }}>
+<div style={{ display: 'flex',  flexDirection: 'column'  }}>
 <div style={{ width: '800px', height: '600px', overflow: 'hidden' }}>
 <ForceGraph2D
               graphData={data}
-              nodeLabel={node => `${node.id}: ${node.name} (${node.val})`}
+              nodeLabel={node => `${node.id}: ${node.name} '%':${node.val}, 'actual':${node.aval}`}
               linkAutoColorBy='white'
               nodeAutoColorBy="id"
               backgroundColor='black'
               width={800}
               height={600}
-              showNavInfo={true}
               linkWidth={(link) => Math.sqrt(link.weight)} // Adjust link width based on weight
+              d3AlphaDecay={0.05} // Increase the alpha decay rate for faster convergence
+              d3VelocityDecay={0.1} // Reduce the velocity decay rate for slower convergence
+              dagLevelDistance	={200}
+      
             />
 </div>
-<div style={{ marginLeft: '20px' }}>
-  <h2>Node Values</h2>
+<div style={{ marginTop: '20px', fontFamily: 'Arial, sans-serif', padding: '20px', border: '1px solid #ccc', borderRadius: '8px', backgroundColor: '#f9f9f9' }}>
+  <h1 style={{ fontWeight: 'bold', marginBottom: '16px', fontSize: '24px' }}>Node Values</h1>
   {data.nodes.map((node) => (
-    <div key={node.id}>
-      <strong>{node.name}</strong>: {node.val}
+    <div key={node.id} style={{ marginBottom: '12px' }}>
+      <span style={{ fontWeight: 'bold', marginRight: '8px' }}>{node.name}:</span> {node.aval}
     </div>
   ))}
 </div>
+
 </div>
 
             
