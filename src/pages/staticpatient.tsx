@@ -17,13 +17,28 @@ import {
       ssr: false // Disable server-side rendering
     });
     
-
+// Define the type for patient data
+interface PatientData {
+    id: number;
+    admission: string;
+    age: number;
+    ethnicity: string;
+    gender: string;
+}
+// Initialize patient data
+const initialPatientData: PatientData = {
+    id: 27,
+    age: 50,
+    admission: "EMERGENCY",
+    ethnicity: "WHITE",
+    gender:"M"
+};
   
   const StaticPatientPage = () => {
   
   const [data, ] = useState({"nodes": [{"id": "3", "name": "medDim1", "val": 0.022, "aval": "[ 1.         0.        -3.0192585]", "x": -0.7758358917721054, "y": 3.1366648109331123}, {"id": "4", "name": "medDim7", "val": 0.017, "aval": "[ 1.          6.         -0.25616106]", "x": 0.8133674449326375, "y": -3.4130111339830704}, {"id": "5", "name": "medDim7", "val": 0.017, "aval": "[ 1.          6.         -0.25616106]", "x": -0.2464751650969086, "y": 4.545143420087255}, {"id": "10", "name": "injury", "val": 4.739, "aval": "[1.]", "x": -0.7686873912352497, "y": -2.2723076713777712}, {"id": "32", "name": "skin", "val": 0.016, "aval": "[1.]", "x": 0.23010264853383172, "y": -4.999999999999999}, {"id": "33", "name": "Glucose", "val": 4.853, "aval": "[ 87.    -1.    -1.    -1.   158.5   -1.    -1.   207.5   -1.    -1.\n 231.    -1.   249.    -1.   202.    -1.   202.   212.   193.   169.75\n 154.   118.   138.   135.5 ]", "x": 0.7371626415165079, "y": 2.279284393356769}, {"id": "34", "name": "respiratory", "val": 71.816, "aval": "[1.]", "x": -0.9283506346577852, "y": 0.9367838423549462}, {"id": "37", "name": "ethnicity", "val": 4.954, "aval": "[0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.\n 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 1. 0. 0. 0. 0. 0.]", "x": -0.38013076887678043, "y": -4.440871991690952}, {"id": "42", "name": "age", "val": 1.07, "aval": "[46.]", "x": 0.3576440198044031, "y": 4.533253086512158}, {"id": "45", "name": "TempC", "val": 4.836, "aval": "[36.055557 35.833332 -1.       35.4      35.45     35.55     35.6\n 35.65     35.6      35.800003 35.9      35.48     35.7      36.1\n 36.1      36.5      37.05     36.1      36.7      36.300003 36.4\n 36.5      36.8      36.2     ]", "x": 0.961203096851449, "y": -0.3049387561924433}], 
   "links": [{"source": "3", "target": "10", "weight": "1.1850000000000001"}, {"source": "3", "target": "33", "weight": "1.213"}, {"source": "3", "target": "34", "weight": "17.954000000000002"}, {"source": "3", "target": "37", "weight": "1.2379999999999999"}, {"source": "3", "target": "45", "weight": "1.209"}, {"source": "4", "target": "34", "weight": "2.325"}, {"source": "5", "target": "10", "weight": "1.131"}, {"source": "5", "target": "33", "weight": "1.134"}, {"source": "5", "target": "34", "weight": "15.629"}, {"source": "5", "target": "37", "weight": "1.157"}, {"source": "10", "target": "34", "weight": "6.853"}, {"source": "32", "target": "34", "weight": "2.799"}, {"source": "33", "target": "34", "weight": "1.1959999999999999"}, {"source": "34", "target": "37", "weight": "1.205"}, {"source": "34", "target": "45", "weight": "7.903999999999999"}, {"source": "10", "target": "42", "weight": "1.1850000000000001"}, {"source": "33", "target": "42", "weight": "1.213"}, {"source": "34", "target": "42", "weight": "17.954000000000002"}, {"source": "37", "target": "42", "weight": "1.2379999999999999"}, {"source": "42", "target": "45", "weight": "1.209"}]});
-  const [patientData,]=useState(null);
+  const [patientData,]=useState([initialPatientData]);
   
   
     return (
