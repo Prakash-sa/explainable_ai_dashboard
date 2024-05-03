@@ -6,8 +6,6 @@ import LayoutGuest from '../layouts/Guest'
 // import { appTitle } from '../config'
 import { useAppDispatch } from '../stores/hooks'
 import { setDarkMode } from '../stores/darkModeSlice'
-import DashboardPage from './dashboard'
-
 const StyleSelectPage = () => {
   const dispatch = useAppDispatch()
 

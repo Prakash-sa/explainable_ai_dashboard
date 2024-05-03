@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Button';
 import Buttons from '../Buttons';
-import CardBoxModal from '../CardBox/Modal';
 import UserAvatar from '../UserAvatar';
-import { mdiEye, mdiTrashCan } from '@mdi/js';
-import axios from 'axios';
+import { mdiEye} from '@mdi/js';
 import { useRouter } from 'next/router';
 
 const TableSampleClients = ({ patients }) => {
@@ -16,18 +14,6 @@ const TableSampleClients = ({ patients }) => {
   const pagesList = Array.from({ length: numPages }, (_, i) => i);
 
   const router = useRouter(); // Initialize the useRouter hook
-
-  const [isModalInfoActive, setIsModalInfoActive] = useState(false);
-  const [isModalTrashActive, setIsModalTrashActive] = useState(false);
-
-  const handleModalAction = () => {
-    setIsModalInfoActive(false);
-    setIsModalTrashActive(false);
-  };
-
-  const clickPatient=(e)=>{
-    console.log(e)
-  }
 
   const handleViewDetails = (patient) => {
 
@@ -85,7 +71,7 @@ const TableSampleClients = ({ patients }) => {
               <Button
                 key={page}
                 active={page === currentPage}
-                label={page + 1}
+                label={`${page + 1}`}
                 color={page === currentPage ? 'lightDark' : 'whiteDark'}
                 small
                 onClick={() => setCurrentPage(page)}

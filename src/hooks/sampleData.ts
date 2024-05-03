@@ -1,10 +1,6 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import useSWR from 'swr'
 
 export const useSampleClients = () => {
   
-  const [data, setPatientInfoData] = useState<any>(null);
 
   // async function fetchPatientData() {
   //     try {
@@ -31,6 +27,6 @@ export const useSampleClients = () => {
   // fetchPatientData();
 
   return {
-    clients: data?.data ?? []
+    clients: []
   }
 }

@@ -1,8 +1,7 @@
-import { mdiTrendingDown, mdiTrendingNeutral, mdiTrendingUp } from '@mdi/js'
+
 import React from 'react'
 import { Client } from '../../interfaces'
 import CardBox from '.'
-import PillTag from '../PillTag'
 import UserAvatar from '../UserAvatar'
 
 type Props = {

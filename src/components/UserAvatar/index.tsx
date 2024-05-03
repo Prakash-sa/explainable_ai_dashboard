@@ -4,26 +4,22 @@
 // next/image needs dangerouslyAllowSVG option for that
 
 import React, { ReactNode } from 'react'
-import MaleImage from "../../../public/male_avatar.png"
-import FemaleImage from "../../../public/female_avatar.png"
 
 type Props = {
   username: string
-  api?: string
   className?: string
   children?: ReactNode
 }
 
 export default function UserAvatar({
   username,
-  api = 'micah',
   className = '',
   children,
 }: Props) {
-  const avatarImage = `https://api.dicebear.com/7.x/${api}/svg?seed=${username.replace(
-    /[^a-z0-9]+/gi,
-    '-'
-  )}`
+  // const avatarImage = `https://api.dicebear.com/7.x/${api}/svg?seed=${username.replace(
+  //   /[^a-z0-9]+/gi,
+  //   '-'
+  // )}`
 
   return (
     <div className={className}>

@@ -1,12 +1,5 @@
 import {
-  mdiAccountCircle,
   mdiMonitor,
-  mdiLock,
-  mdiAlertCircle,
-  mdiSquareEditOutline,
-  mdiTable,
-  mdiViewList,
-  mdiTelevisionGuide,
 } from '@mdi/js'
 import { MenuAsideItem } from './interfaces'
 
@@ -20,6 +13,12 @@ const menuAside: MenuAsideItem[] = [
     href: '/patients',
     icon: mdiMonitor,
     label: 'Patients',
+  },
+
+  {
+    href: '/staticpatient',
+    icon: mdiMonitor,
+    label: 'Static Data',
   },
   {
     href: '/cases',
