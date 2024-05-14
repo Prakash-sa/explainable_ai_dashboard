@@ -26,6 +26,7 @@ import UserAvatar from '../components/UserAvatar'
     return (
       <>
         <Head>
+          
           <title>{getPageTitle('Patients')}</title>
         </Head>
         <SectionMain>
