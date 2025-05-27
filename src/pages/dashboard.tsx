@@ -114,11 +114,11 @@ const DashboardPage = () => {
 
         <SectionTitleLineWithButton icon={mdiAccountMultiple} title="Patient Information" />
 
-        {patientInfoData && (
+        {/* {patientInfoData && (
               <CardBox hasTable>
               <TableSampleClients patients={patientInfoData} />
             </CardBox>
-            )}
+            )} */}
         
       </SectionMain>
     </>
